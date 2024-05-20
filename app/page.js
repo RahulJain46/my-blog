@@ -28,6 +28,10 @@ async function getPosts() {
 
 export default async function Home(context) {
   const posts = await getPosts();
+  posts.sort((a, b) => {
+    return new Date(b.data.isoDate) - new Date(a.data.isoDate);
+  });
+  console.log(posts);
   let currentPage =
     context.searchParams?.page === undefined || !context.searchParams?.page
       ? 1

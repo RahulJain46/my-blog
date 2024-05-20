@@ -43,23 +43,6 @@ export default function NewPost() {
         <div className="mb-4">
           <label
             className="block text-gray-700 font-semibold mb-2"
-            htmlFor="date"
-          >
-            Date
-          </label>
-          <input
-            id="date"
-            name="date"
-            type="date"
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 font-semibold mb-2"
             htmlFor="url"
           >
             URL

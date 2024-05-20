@@ -25,9 +25,7 @@ export default async function Page({ params }) {
         <h1 className="text-4xl font-extrabold text-center text-gray-900 mb-4">
           {data.title}
         </h1>
-        <p className="text-gray-500 text-center">
-          {new Date(data.date).toLocaleDateString()}
-        </p>
+        <p className="text-gray-500 text-center">{data.date}</p>
       </header>
       <section className="prose lg:prose-xl">
         <ReactMarkdown>{content}</ReactMarkdown>
