@@ -24,7 +24,7 @@ url: "${url}"
 
 ${content}`;
 
-  const postsDirectory = path.join(process.cwd(), "posts");
+  const postsDirectory = path.join("/tmp", "posts");
   const filePath = path.join(postsDirectory, `${slug}.md`);
   console.log(filePath, "filePath");
   fs.writeFileSync(filePath, postContent);
