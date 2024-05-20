@@ -1,6 +1,8 @@
 "use server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import fs from "fs";
+import path from "path";
 
 export async function createPost(prevState, formData) {
   console.log(formData, prevState);
@@ -9,18 +11,23 @@ export async function createPost(prevState, formData) {
   const content = formData.get("content");
   const url = formData.get("url");
 
-  const res = await fetch("http://localhost:3000/api/create-post", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ title, date, content, url }),
-  });
-
-  if (res.ok) {
-    revalidatePath("/");
-    redirect("/");
-  } else {
-    return { message: "error in post" };
+  if ((!title || !date || !content, !url)) {
+    return new Response("Missing fields", { status: 400 });
   }
+
+  const slug = title.toLowerCase().replace(/ /g, "-");
+  const postContent = `---
+title: "${title}"
+date: "${date}"
+url: "${url}"
+---
+
+${content}`;
+
+  const postsDirectory = path.join(process.cwd(), "posts");
+  const filePath = path.join(postsDirectory, `${slug}.md`);
+  console.log(filePath, "filePath");
+  fs.writeFileSync(filePath, postContent);
+  await revalidatePath("/");
+  redirect("/");
 }
