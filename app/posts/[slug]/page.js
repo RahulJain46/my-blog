@@ -1,4 +1,3 @@
-// app/(posts)/[slug]/page.js
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
@@ -21,10 +20,18 @@ export default async function Page({ params }) {
   const { data, content } = await getPost(slug);
 
   return (
-    <article>
-      <h1 className="text-3xl font-bold mb-4">{data.title}</h1>
-      <p className="text-gray-500 mb-4">{data.date}</p>
-      <ReactMarkdown>{content}</ReactMarkdown>
+    <article className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg mt-8">
+      <header className="mb-8">
+        <h1 className="text-4xl font-extrabold text-center text-gray-900 mb-4">
+          {data.title}
+        </h1>
+        <p className="text-gray-500 text-center">
+          {new Date(data.date).toLocaleDateString()}
+        </p>
+      </header>
+      <section className="prose lg:prose-xl">
+        <ReactMarkdown>{content}</ReactMarkdown>
+      </section>
     </article>
   );
 }

@@ -1,4 +1,3 @@
-// app/posts/new/page.js
 "use client";
 
 import { useState } from "react";
@@ -16,38 +15,59 @@ export default function NewPost() {
   const [content, setContent] = useState("");
   const router = useRouter();
   const [state, formAction] = useFormState(createPost, initialState);
+  const { pending, error, success } = useFormStatus();
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Create a New Post</h1>
-      <form action={formAction}>
+    <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg mt-8">
+      <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-900">
+        Create a New Post
+      </h1>
+      <form action={formAction} className="space-y-6">
         <div className="mb-4">
-          <label className="block text-gray-700">Title</label>
+          <label
+            className="block text-gray-700 font-semibold mb-2"
+            htmlFor="title"
+          >
+            Title
+          </label>
           <input
+            id="title"
             name="title"
             type="text"
-            className="mt-1 block w-full"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Date</label>
+          <label
+            className="block text-gray-700 font-semibold mb-2"
+            htmlFor="date"
+          >
+            Date
+          </label>
           <input
+            id="date"
             name="date"
             type="date"
-            className="mt-1 block w-full"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Content</label>
+          <label
+            className="block text-gray-700 font-semibold mb-2"
+            htmlFor="content"
+          >
+            Content
+          </label>
           <textarea
+            id="content"
             name="content"
-            className="mt-1 block w-full"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
             rows="10"
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -56,10 +76,15 @@ export default function NewPost() {
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 w-full"
+          disabled={pending}
         >
-          Create Post
+          {pending ? "Creating..." : "Create Post"}
         </button>
+        {error && <p className="text-red-500 mt-4">{error.message}</p>}
+        {success && (
+          <p className="text-green-500 mt-4">Post created successfully!</p>
+        )}
       </form>
     </div>
   );
