@@ -4,9 +4,9 @@ import path from "path";
 import { revalidatePath } from "next/cache";
 
 export async function POST(req) {
-  const { title, date, content } = await req.json();
+  const { title, date, content, url } = await req.json();
 
-  if (!title || !date || !content) {
+  if ((!title || !date || !content, !url)) {
     return new Response("Missing fields", { status: 400 });
   }
 
@@ -14,6 +14,7 @@ export async function POST(req) {
   const postContent = `---
 title: "${title}"
 date: "${date}"
+url: "${url}"
 ---
 
 ${content}`;

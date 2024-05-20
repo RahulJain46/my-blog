@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { revalidatePath } from "next/cache";
+import { RefreshCache } from "./posts/[slug]/refresh-cache";
 
 const POSTS_PER_PAGE = 7;
 
@@ -54,6 +55,7 @@ export default async function Home(context) {
             Welcome to My Blog
           </h1>
         </div>
+        <RefreshCache check={checkIfPostHasChanged} />
         <ul className="space-y-6">
           {currentPosts.map((post) => (
             <li
