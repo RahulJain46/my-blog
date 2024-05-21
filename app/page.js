@@ -5,12 +5,17 @@ import matter from "gray-matter";
 import { revalidatePath } from "next/cache";
 import { RefreshCache } from "./posts/[slug]/refresh-cache";
 
+// Define the number of posts per page
 const POSTS_PER_PAGE = 7;
 
+// Function to retrieve all posts from the filesystem
 async function getPosts() {
   const postsDirectory = path.join(process.cwd(), "posts");
+
+  // Synchronously read all filenames in the posts directory
   const filenames = fs.readdirSync(postsDirectory);
 
+  // Map through each filename and retrieve its content and metadata
   const posts = filenames.map((filename) => {
     const filePath = path.join(postsDirectory, filename);
     const fileContents = fs.readFileSync(filePath, "utf8");
@@ -27,21 +32,25 @@ async function getPosts() {
 }
 
 export default async function Home(context) {
+  // Fetch all posts
   const posts = await getPosts();
-  posts.sort((a, b) => {
-    return new Date(b.data.isoDate) - new Date(a.data.isoDate);
-  });
-  console.log(posts);
-  let currentPage =
-    context.searchParams?.page === undefined || !context.searchParams?.page
-      ? 1
-      : parseInt(context.searchParams?.page);
+
+  // Sort posts by ISO date in descending order
+  posts.sort((a, b) => new Date(b.data.isoDate) - new Date(a.data.isoDate));
+
+  // Determine the current page from the query parameters
+  const currentPage = context.searchParams?.page
+    ? parseInt(context.searchParams.page)
+    : 1;
+
+  // Calculate total pages and the posts for the current page
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
   const currentPosts = posts.slice(
     (currentPage - 1) * POSTS_PER_PAGE,
     currentPage * POSTS_PER_PAGE
   );
 
+  // Function to check if any posts have changed and revalidate the path
   async function checkIfPostHasChanged() {
     "use server";
     const checkPosts = await getPosts();

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useFormStatus, useFormState } from "react-dom";
 import { createPost } from "../../actions/create-post";
 
@@ -11,8 +10,8 @@ const initialState = {
 
 export default function NewPost() {
   const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-  const [date, setDate] = useState("");
   const [content, setContent] = useState("");
   const [state, formAction] = useFormState(createPost, initialState);
   const { pending, error, success } = useFormStatus();
@@ -37,6 +36,23 @@ export default function NewPost() {
             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 font-semibold mb-2"
+            htmlFor="author"
+          >
+            Author
+          </label>
+          <input
+            id="author"
+            name="author"
+            type="text"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
             required
           />
         </div>
